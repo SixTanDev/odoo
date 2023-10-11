@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "odoo"
+version = "0.1.0"
+description = ""
+authors = ["SixTanDev <sixtandev@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pylint = "^3.0.1"
+bandit = "^1.7.5"
+pre-commit = "^3.4.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

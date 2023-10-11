@@ -1,0 +1,18 @@
+repos:
+-   repo: local
+    hooks:
+    -   id: pylint
+        name: pylint
+        entry: pylint
+        language: system
+        types: [python]
+        stages: [commit]
+        args: ["--rcfile=./addons/pylint.cfg", "./addons/checklist_management"]
+
+    -   id: bandit
+        name: bandit
+        entry: bandit
+        language: system
+        types: [ python ]
+        stages: [ commit ]
+        args: [ "-r", "./addons/checklist_management" ]
