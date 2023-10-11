@@ -1,0 +1,61 @@
+  version: '3.1'
+  services:
+    web:
+      image: amd64/odoo:16.0
+      container_name: odoo_container
+      platform: linux/amd64
+      depends_on:
+        - db
+      ports:
+        - "8069:8069"
+      volumes:
+        - odoo-web-data:/var/lib/odoo
+        - ./config:/etc/odoo
+        - ./addons:/mnt/extra-addons
+      environment:
+        - PASSWORD=odoo
+        - DEBUG_MODE=on
+      command: -i base
+
+    developement:
+      image: python:3.9
+      container_name: development_python
+      build:
+        context: .
+        dockerfile: DockerFile
+      volumes:
+        - odoo-web-data:/var/lib/odoo
+        - ./config:/etc/odoo
+        - ./addons:/mnt/extra-addons
+      command: tail -f /dev/null
+
+    db:
+      image: postgres:15
+      container_name: postgres_container
+      environment:
+        - POSTGRES_DB=odoo
+        - POSTGRES_PASSWORD=odoo
+        - POSTGRES_USER=odoo
+        - PGDATA=/var/lib/postgresql/data/pgdata
+      volumes:
+        - odoo-db-data:/var/lib/postgresql/data/pgdata
+
+    pgadmin:
+      image: dpage/pgadmin4
+      container_name: pgadmin_view
+      environment:
+        PGADMIN_LISTEN_PORT: 5050
+        PGADMIN_DEFAULT_PASSWORD: admin
+        PGADMIN_DEFAULT_EMAIL: admin@macroferia.com
+        PGDATA: /var/lib/postgresql/data/pgdata
+      ports:
+        - "5050:5050"
+      volumes:
+        - pgadmin-data:/var/lib/pgadmin
+      depends_on:
+        - db
+
+  volumes:
+    odoo-web-data:
+    odoo-db-data:
+    pgadmin-data:
