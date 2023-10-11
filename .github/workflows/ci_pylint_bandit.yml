@@ -2,9 +2,9 @@ name: Static Analysis with Pylint and Bandit in 'app/'
 
 on:
   push:
-    branches: [ "dev", "main" ]
+    branches: [ "dev", "main", "feat/github-actions-implementation" ]
   pull_request:
-    branches: [ "dev", "main" ]
+    branches: [ "dev", "main" "feat/github-actions-implementation" ]
 
 jobs:
   analyze:
