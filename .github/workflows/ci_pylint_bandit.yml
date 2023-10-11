@@ -1,0 +1,35 @@
+name: Static Analysis with Pylint and Bandit in 'addons/'
+
+on:
+  push:
+    branches: [ "dev", "main" ]
+  pull_request:
+    branches: [ "dev", "main" ]
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Move poetry files  and pylint config
+        run: |
+          mv addons/p* .
+      - name: Install Poetry dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install poetry
+          poetry install
+      - name: Run Pylint
+        run: |
+          poetry run pylint --rcfile=pylint.cfg addons/checklist_management
+      - name: Run Bandit
+        run: |
+          poetry run bandit -r addons/checklist_management
