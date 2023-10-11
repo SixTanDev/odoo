@@ -1,0 +1,17 @@
+FROM python:3.9
+
+USER root
+
+RUN apt-get update && apt-get install -y
+RUN pip install poetry
+
+# Set the working directory in the container
+WORKDIR /mnt/extra-addons
+
+# Copy your application files into the container
+COPY ./addons /mnt/extra-addons
+
+# Entrypoint script to configure Poetry and run the application
+COPY ./entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
